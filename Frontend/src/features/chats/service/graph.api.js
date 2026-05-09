@@ -91,7 +91,6 @@ export async function runGraphStream(userMessage, { onEvent, signal } = {}) {
       const match = rawEvent.match(/^data:\s*(.+)$/);
       
       if (!match) {
-        console.warn("⚠️ Invalid event format:", rawEvent.substring(0, 50));
         return;
       }
       
@@ -106,7 +105,7 @@ export async function runGraphStream(userMessage, { onEvent, signal } = {}) {
         eventCount++;
         onEvent?.(parsed);
       } catch (err) {
-        console.warn("⚠️ Failed to parse event:", dataStr.substring(0, 100), err.message);
+        throw new Error(`Failed to parse event data: ${err.message}`);
       }
     }
 
@@ -122,7 +121,6 @@ export async function runGraphStream(userMessage, { onEvent, signal } = {}) {
 
     return mockEventSource;
   } catch (err) {
-    console.error("🔴 Fetch error:", err);
     onEvent?.({
       type: "error",
       message: err.message || "Failed to connect",
@@ -206,7 +204,6 @@ export async function judgeGraph(solution_1, solution_2, { onEvent, signal } = {
         }
       } catch (err) {
         if (err.name !== "AbortError") {
-          console.error("🔴 Judge stream error:", err);
           onEvent?.({
             type: "error",
             message: err.message || "Judge stream failed",
@@ -224,14 +221,12 @@ export async function judgeGraph(solution_1, solution_2, { onEvent, signal } = {
       const match = rawEvent.match(/^data:\s*(.+)$/);
       
       if (!match) {
-        console.warn("⚠️ Invalid judge event format:", rawEvent.substring(0, 50));
         return;
       }
       
       const dataStr = match[1];
       
       if (dataStr === "[DONE]") {
-        console.log("🏁 Judge [DONE] signal received");
         return;
       }
       
@@ -240,7 +235,7 @@ export async function judgeGraph(solution_1, solution_2, { onEvent, signal } = {
         eventCount++;
         onEvent?.(parsed);
       } catch (err) {
-        console.warn("⚠️ Failed to parse judge event:", dataStr.substring(0, 100), err.message);
+        throw new Error(`Failed to parse event data: ${err.message}`);
       }
     }
 
@@ -256,7 +251,6 @@ export async function judgeGraph(solution_1, solution_2, { onEvent, signal } = {
 
     return mockEventSource;
   } catch (err) {
-    console.error("🔴 Judge fetch error:", err);
     onEvent?.({
       type: "error",
       message: err.message || "Failed to connect to judge",

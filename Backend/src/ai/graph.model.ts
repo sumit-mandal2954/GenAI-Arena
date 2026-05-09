@@ -43,7 +43,6 @@ const solutionNode: GraphNode<typeof State> = async (State, config) => {
       }
       sol1Complete = true;
     } catch (e) {
-      console.error("❌ Mistral error:", e);
       sol1Complete = true;
     }
   })();
@@ -63,7 +62,6 @@ const solutionNode: GraphNode<typeof State> = async (State, config) => {
       }
       sol2Complete = true;
     } catch (e) {
-      console.error("❌ Cohere error:", e);
       sol2Complete = true;
     }
   })();
@@ -170,7 +168,6 @@ export async function* runGraph(userMessages: string) {
         }
         mistralDone = true;
       } catch (e) {
-        console.error("❌ Mistral error:", e);
         mistralDone = true;
       }
     })();
@@ -186,7 +183,6 @@ export async function* runGraph(userMessages: string) {
         }
         cohereDone = true;
       } catch (e) {
-        console.error("❌ Cohere error:", e);
         cohereDone = true;
       }
     })();
@@ -240,7 +236,6 @@ export async function* runGraph(userMessages: string) {
     };
 
   } catch (err) {
-    console.error("🔴 Error in runGraph:", err);
     throw err;
   }
 }
@@ -291,7 +286,6 @@ Rate each 0-10 and explain briefly.`,
       },
     };
   } catch (err) {
-    console.error("🔴 Judge error:", err);
     yield {
       type: "final",
       content: {

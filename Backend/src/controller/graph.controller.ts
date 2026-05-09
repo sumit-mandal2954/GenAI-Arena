@@ -16,7 +16,6 @@ export async function getGraphData(req: Request, res: Response) {
     res.setHeader("Connection", "keep-alive");
     res.setHeader("X-Accel-Buffering", "no"); // Disable proxy buffering
 
-    console.log("🔥 Starting graph stream for:", userMessage);
     const stream = runGraph(userMessage);
 
     let chunkCount = 0;
@@ -35,7 +34,6 @@ export async function getGraphData(req: Request, res: Response) {
 
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
-    console.error("🔴 Error in getGraphData:", message, error);
     res.status(500).json({ error: message });
   }
 }
@@ -59,13 +57,11 @@ export async function judgeOnly(req: Request, res: Response) {
     res.setHeader("Connection", "keep-alive");
     res.setHeader("X-Accel-Buffering", "no"); // Disable proxy buffering
 
-    console.log("🏛️ Starting judge-only for solutions");
     const stream = runJudgeOnly(solution_1, solution_2, userMessage || "");
 
     let chunkCount = 0;
     for await (const chunk of stream) {
       chunkCount++;
-      console.log(`📊 Judge Chunk ${chunkCount}:`, JSON.stringify(chunk).substring(0, 100));
       res.write(`data: ${JSON.stringify(chunk)}\n\n`);
       
       // 🔥 Flush immediately
@@ -79,7 +75,6 @@ export async function judgeOnly(req: Request, res: Response) {
 
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
-    console.error("🔴 Error in judgeOnly:", message, error);
     res.status(500).json({ error: message });
   }
 }

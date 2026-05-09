@@ -26,10 +26,7 @@ const Register = () => {
       toast.success("Registration successful!");
       navigate("/");
     } catch (error) {
-      console.log("Register error object:", error);
-      console.log("Error response:", error?.response);
       const errorMessage = error?.response?.data?.message || "Registration failed";
-      console.log("Showing toast:", errorMessage);
       toast.error(errorMessage);
     }
   };

@@ -61,10 +61,7 @@ export function useGraph() {
 
             // Fallback: check if it looks like solution content
             if (content.length > 5) {
-              console.log("⚠️ Unknown node, using AI-1 fallback");
               dispatch(appendAi1Response(content));
-            } else {
-              console.log("⚠️ Ignoring short token from unknown node:", content);
             }
 
             return;
@@ -247,7 +244,6 @@ export function useGraph() {
           // 🔥 ERROR HANDLING
           // =========================
           if (event.type === "error") {
-            console.error("❌ Judge error event:", event);
             dispatch(setError(event.message || "Something went wrong"));
 
             dispatch(setLoadingJudge(false));
@@ -264,7 +260,6 @@ export function useGraph() {
 
       return es;
     } catch (error) {
-      console.error("❌ Judge error:", error);
       dispatch(setError(error?.message || "Unknown error"));
       dispatch(setLoadingJudge(false));
       throw error;
