@@ -1,9 +1,9 @@
-import { useSelector } from "react-redux";
-import Header from "./components/Header";
-import ProblemInput from "./components/ProblemInput";
-import ResponseCard from "./components/ResponseCard";
-import JudgePanel from "./components/JudgePanel";
-import { useGraph } from "./hook/useGraph";
+import { useSelector} from "react-redux";
+import Header from "../features/chats/components/Header";
+import ProblemInput from "../features/chats/components/ProblemInput";
+import ResponseCard from "../features/chats/components/ResponseCard";
+import JudgePanel from "../features/chats/components/JudgePanel";
+import { useGraph } from "../features/chats/hook/useGraph";
 
 const App = () => {
   const {
@@ -26,7 +26,11 @@ const App = () => {
   const handleJudge = async () => {
     if (!ai1Response || !ai2Response || judgeResult) return;
 
-    return;
+    try {
+      await chat.handleJudge(ai1Response, ai2Response);
+    } catch (error) {
+      console.error("Judge error:", error);
+    }
   };
 
   return (
