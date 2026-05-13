@@ -1,4 +1,4 @@
-# AI Battle Arena - Frontend
+# GenAI Arena - Frontend
 
 Real-time AI solution streaming and judging platform built with React + Vite.
 

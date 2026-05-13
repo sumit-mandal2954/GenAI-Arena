@@ -62,7 +62,7 @@ const Login = () => {
               Welcome back
             </h1>
             <p className="mt-2 text-sm text-slate-300">
-              Log in to continue your next AI battle.
+              Log in to continue your next GenAI Arena challenge.
             </p>
           </div>
 

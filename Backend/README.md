@@ -1,4 +1,4 @@
-# AI Battle Arena - Backend
+# GenAI Arena - Backend
 
 Node.js/Express backend for real-time AI solution streaming and evaluation using LangChain.
 

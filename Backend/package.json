@@ -1,7 +1,7 @@
 {
-  "name": "ai-battle-arena",
+  "name": "genai-arena-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "GenAI Arena Backend - Real-time AI solution streaming and evaluation platform",
   "main": "index.js",
   "type": "module",
   "scripts": {
