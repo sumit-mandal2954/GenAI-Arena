@@ -10,6 +10,7 @@ export const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('dev'));
+app.use(express.static('./public'));
 
 // 🔥 CORS configuration to accept requests from multiple ports during development
 const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174'];

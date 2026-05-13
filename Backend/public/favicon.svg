@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6C3CE1"/>
+      <stop offset="100%" style="stop-color:#A855F7"/>
+    </linearGradient>
+    <linearGradient id="bolt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F0ABFC"/>
+      <stop offset="100%" style="stop-color:#FFFFFF"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Hexagon background -->
+  <polygon points="32,2 58,16 58,48 32,62 6,48 6,16" fill="url(#bg)" rx="4"/>
+
+  <!-- Subtle inner ring -->
+  <polygon points="32,7 53,19 53,45 32,57 11,45 11,19" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+
+  <!-- Left lightning bolt -->
+  <path d="M20,17 L15,33 L21,33 L17,47 L28,29 L22,29 Z" fill="url(#bolt)" opacity="0.9"/>
+
+  <!-- Right lightning bolt (mirrored) -->
+  <path d="M44,17 L49,33 L43,33 L47,47 L36,29 L42,29 Z" fill="url(#bolt)" opacity="0.9"/>
+
+  <!-- VS divider dot -->
+  <circle cx="32" cy="32" r="2.5" fill="white" opacity="0.7"/>
+</svg>
