@@ -1,5 +1,5 @@
-import {app} from './src/app.js';
-import { connectDB } from './src/config/database.js';
+import {app} from './dist/src/app.js';
+import { connectDB } from './dist/src/config/database.js';
 
 // Connect to MongoDB
 connectDB();
