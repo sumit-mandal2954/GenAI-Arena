@@ -81,6 +81,25 @@ export async function loginController(req: Request, res: Response) {
   }
 }
 
+export async function guestLoginController(req: Request, res: Response) {
+  try {
+    // Generate a unique guest username with timestamp
+    const guestUsername = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const guestEmail = `${guestUsername}@guest.local`;
+
+    const user = await userModel.create({
+      username: guestUsername,
+      email: guestEmail,
+      password: undefined, // No password for guest users
+    }) as IUser;
+
+    sendToken(user, res);
+  } catch (error) {
+    console.error("Guest login error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
 export async function getCurrentUser(req: Request, res: Response) {
   try {
     const user = req.user;

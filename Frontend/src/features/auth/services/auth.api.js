@@ -32,6 +32,16 @@ export const login = async ({ email, password }) => {
   }
 };
 
+export const guestLogin = async () => {
+  try {
+    const response = await api.post("/guest-login");
+    return response.data;
+  } catch (error) {
+    console.error("Guest login error:", error);
+    throw error;
+  }
+};
+
 export const getCurrentUser = async () => {
   try {
     const response = await api.get("/me");

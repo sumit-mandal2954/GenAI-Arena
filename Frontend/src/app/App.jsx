@@ -1,4 +1,5 @@
-import { useSelector} from "react-redux";
+import { useSelector } from "react-redux";
+import { useEffect, useRef } from "react";
 import Header from "../features/chats/components/Header";
 import ProblemInput from "../features/chats/components/ProblemInput";
 import ResponseCard from "../features/chats/components/ResponseCard";
@@ -16,6 +17,17 @@ const App = () => {
   } = useSelector((state) => state.chat);
 
   const chat = useGraph();
+  const mainContainerRef = useRef(null);
+
+  // 🔥 Autoscroll to bottom when responses or judge results update
+  useEffect(() => {
+    if (mainContainerRef.current) {
+      const scrollContainer = mainContainerRef.current;
+      setTimeout(() => {
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+      }, 100);
+    }
+  }, [ai1Response, ai2Response, judgeResult, loadingResponses, loadingJudge]);
 
   const handleStartBattle = async () => {
     if (!userMessage.trim()) return;
@@ -24,7 +36,10 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div 
+      ref={mainContainerRef}
+      className="min-h-screen overflow-y-auto bg-slate-950 text-slate-100"
+    >
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-10">
         <Header />
 
