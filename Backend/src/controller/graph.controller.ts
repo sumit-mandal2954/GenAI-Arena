@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { runGraph, runJudgeOnly } from "../ai/graph.model.js";
+import { runGraph } from "../ai/graph.model.js";
 
 export async function getGraphData(req: Request, res: Response) {
   try {
@@ -38,43 +38,3 @@ export async function getGraphData(req: Request, res: Response) {
   }
 }
 
-export async function judgeOnly(req: Request, res: Response) {
-  try {
-    const { solution_1, solution_2, userMessage } = req.body as { 
-      solution_1?: string; 
-      solution_2?: string;
-      userMessage?: string;
-    };
-
-    if (!solution_1 || !solution_2) {
-      res.status(400).json({ error: "solution_1 and solution_2 are required" });
-      return;
-    }
-
-    // ✅ SSE headers
-    res.setHeader("Content-Type", "text/event-stream");
-    res.setHeader("Cache-Control", "no-cache");
-    res.setHeader("Connection", "keep-alive");
-    res.setHeader("X-Accel-Buffering", "no"); // Disable proxy buffering
-
-    const stream = runJudgeOnly(solution_1, solution_2, userMessage || "");
-
-    let chunkCount = 0;
-    for await (const chunk of stream) {
-      chunkCount++;
-      res.write(`data: ${JSON.stringify(chunk)}\n\n`);
-      
-      // 🔥 Flush immediately
-      if (res.flush) {
-        res.flush();
-      }
-    }
-
-    res.write("data: [DONE]\n\n");
-    res.end();
-
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Unknown error";
-    res.status(500).json({ error: message });
-  }
-}

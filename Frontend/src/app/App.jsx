@@ -23,16 +23,6 @@ const App = () => {
     await chat.handlerunGraph(userMessage.trim());
   };
 
-  const handleJudge = async () => {
-    if (!ai1Response || !ai2Response || judgeResult) return;
-
-    try {
-      await chat.handleJudge(ai1Response, ai2Response);
-    } catch (error) {
-      console.error("Judge error:", error);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-10">
@@ -59,10 +49,8 @@ const App = () => {
         </section>
 
         <JudgePanel
-          onJudge={handleJudge}
           loading={loadingJudge}
           result={judgeResult}
-          disabled={loadingResponses || !ai1Response || !ai2Response}
         />
       </div>
     </div>

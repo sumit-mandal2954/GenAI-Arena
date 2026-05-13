@@ -10,7 +10,7 @@ import {
   setLoadingResponses,
   setUserMessage,
 } from "../chat.slice";
-import { runGraphStream, judgeGraph } from "../service/graph.api";
+import { runGraphStream } from "../service/graph.api";
 
 // 🔥 keep track of active stream globally inside hook file
 let currentStream = null;
@@ -32,6 +32,7 @@ export function useGraph() {
       // 🔥 Reset state
       dispatch(setUserMessage(userMessage));
       dispatch(setLoadingResponses(true));
+      dispatch(setLoadingJudge(true)); // 🔥 Judge will run automatically after solutions
       dispatch(setJudgeResult(null));
       dispatch(setAi1Response(""));
       dispatch(setAi2Response(""));
@@ -177,98 +178,15 @@ export function useGraph() {
     }
   }
 
-  async function handleJudge(ai1Response, ai2Response) {
-    try {
-      // 🔥 Close previous stream (IMPORTANT)
-      if (currentStream) {
-        currentStream.close();
-      }
-
-      // 🔥 Reset judge state
-      dispatch(setLoadingJudge(true));
-      dispatch(setJudgeResult(null));
-      dispatch(setError(null));
-
-
-      const es = await judgeGraph(ai1Response, ai2Response, {
-        onEvent: (event) => {
-
-          if (!event || typeof event !== "object") return;
-
-          // =========================
-          // 🔥 FINAL JUDGE RESULT
-          // =========================
-          if (event.type === "final" || event.type === "judge") {
-            const judge = event.content || event;
-
-            const scoreAI1 = judge?.solution_1_score ?? null;
-            const scoreAI2 = judge?.solution_2_score ?? null;
-
-            const winner =
-              scoreAI1 === null || scoreAI2 === null
-                ? null
-                : scoreAI1 === scoreAI2
-                  ? "Tie"
-                  : scoreAI1 > scoreAI2
-                    ? "AI-1"
-                    : "AI-2";
-
-            const reasonParts = [];
-            if (judge?.solution_1_reason) {
-              reasonParts.push(`AI-1: ${judge.solution_1_reason}`);
-            }
-            if (judge?.solution_2_reason) {
-              reasonParts.push(`AI-2: ${judge.solution_2_reason}`);
-            }
-
-            dispatch(
-              setJudgeResult({
-                scoreAI1,
-                scoreAI2,
-                winner,
-                reason: reasonParts.join(" "),
-              })
-            );
-
-            // 🔥 stop loading
-            dispatch(setLoadingJudge(false));
-
-            // 🔥 close stream
-            es.close();
-            currentStream = null;
-
-            return;
-          }
-
-          // =========================
-          // 🔥 ERROR HANDLING
-          // =========================
-          if (event.type === "error") {
-            dispatch(setError(event.message || "Something went wrong"));
-
-            dispatch(setLoadingJudge(false));
-
-            es.close();
-            currentStream = null;
-
-            return;
-          }
-        },
-      });
-
-      currentStream = es;
-
-      return es;
-    } catch (error) {
-      dispatch(setError(error?.message || "Unknown error"));
-      dispatch(setLoadingJudge(false));
-      throw error;
-    }
+  async function handleJudge() {
+    // 🔥 DEPRECATED: Judge now runs automatically with solutions
+    // This function is kept for backward compatibility but does nothing
+    console.warn("handleJudge is deprecated. Judge results are now automatically included in the stream.");
   }
 
   return {
     handlerunGraph,
     handleUserMessageChange,
-    handleJudge,
+    handleJudge, // Kept for backward compatibility
   };
 }

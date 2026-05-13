@@ -227,73 +227,36 @@ export async function* runGraph(userMessages: string) {
     }
 
 
+    // 🔥 Run judge node to get evaluation and emit results
+    // Create a state object with the solutions to pass to judge
+    const judgeState = {
+      problem: userMessages,
+      solution_1: sol1,
+      solution_2: sol2,
+      judge_recommendation: {
+        solution_1_score: 0,
+        solution_2_score: 0,
+        solution_1_reason: "",
+        solution_2_reason: "",
+      },
+    };
+
+    const judgeResult = await judgeNode(judgeState, {});
+
+    yield {
+      type: "judge",
+      content: judgeResult.judge_recommendation,
+    };
+
     // 🔥 Emit completion signal so frontend knows streaming is done
     yield {
       type: "done",
       content: {
-        message: "Solutions streaming complete",
+        message: "Evaluation complete",
       },
     };
 
   } catch (err) {
     throw err;
-  }
-}
-
-// 🔥 JUDGE-ONLY: Run just the judge without streaming solutions
-export async function* runJudgeOnly(solution_1: string, solution_2: string, problem: string = "") {
-
-  try {
-    const judge = createAgent({
-      model: googleModel,
-      tools: [],
-      responseFormat: providerStrategy(
-        z.object({
-          solution_1_score: z.number().min(0).max(10),
-          solution_2_score: z.number().min(0).max(10),
-          solution_1_reason: z.string(),
-          solution_2_reason: z.string(),
-        }),
-      ),
-      systemPrompt: `You are a fair judge. Evaluate these two solutions:
-
-${problem ? `Problem: ${problem}\n\n` : ""}
-Solution 1: ${solution_1}
-
-Solution 2: ${solution_2}
-
-Rate each 0-10 and explain briefly.`,
-    });
-
-    const judgeResponse = await judge.invoke({
-      messages: [new HumanMessage("Please evaluate the solutions above.")],
-    });
-
-    const {
-      solution_1_score,
-      solution_2_score,
-      solution_1_reason,
-      solution_2_reason,
-    } = judgeResponse.structuredResponse;
-
-    yield {
-      type: "final",
-      content: {
-        solution_1_score,
-        solution_2_score,
-        solution_1_reason,
-        solution_2_reason,
-      },
-    };
-  } catch (err) {
-    yield {
-      type: "final",
-      content: {
-        solution_1_score: null,
-        solution_2_score: null,
-        solution_1_reason: "Error",
-        solution_2_reason: String(err),
-      },
-    };
   }
 }
