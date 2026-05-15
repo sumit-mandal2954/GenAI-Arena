@@ -231,7 +231,7 @@ export async function* runGraph(userMessages: string) {
       },
     };
 
-    const judgeResult = await judgeNode(judgeState, {});
+    const judgeResult = (await judgeNode(judgeState, {})) as any;
 
     yield {
       type: "judge",
