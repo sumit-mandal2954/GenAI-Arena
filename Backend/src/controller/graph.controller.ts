@@ -22,11 +22,6 @@ export async function getGraphData(req: Request, res: Response) {
     for await (const chunk of stream) {
       chunkCount++;
       res.write(`data: ${JSON.stringify(chunk)}\n\n`);
-      
-      // 🔥 Flush immediately to ensure data reaches client
-      if (res.flush) {
-        res.flush();
-      }
     }
 
     res.write("data: [DONE]\n\n");

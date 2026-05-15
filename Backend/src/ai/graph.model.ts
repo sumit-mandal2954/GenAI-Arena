@@ -35,11 +35,6 @@ const solutionNode: GraphNode<typeof State> = async (State, config) => {
       for await (const chunk of stream) {
         const token = chunk.content;
         sol1 += token;
-
-        // Emit immediate update through config if available
-        if (config?.callbacks?.on_llm_new_token) {
-          config.callbacks.on_llm_new_token(token);
-        }
       }
       sol1Complete = true;
     } catch (e) {
@@ -54,11 +49,6 @@ const solutionNode: GraphNode<typeof State> = async (State, config) => {
       for await (const chunk of stream) {
         const token = chunk.content;
         sol2 += token;
-
-        // Emit immediate update through config if available
-        if (config?.callbacks?.on_llm_new_token) {
-          config.callbacks.on_llm_new_token(token);
-        }
       }
       sol2Complete = true;
     } catch (e) {
@@ -108,10 +98,10 @@ const judgeNode: GraphNode<typeof State> = async (State, config) => {
             Please evaluate each solution on a scale of 0 to 10, where 0 is the worst and 10 is the best. 
             Provide a score for each solution along with a brief reason for the score.
           `),
-      ],
-    },
+      ] as any,
+    } as any,
     config,
-  );
+  ); 
 
   const {
     solution_1_score,
