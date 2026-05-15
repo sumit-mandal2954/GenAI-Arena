@@ -3,7 +3,6 @@ import {
   START,
   StateGraph,
   StateSchema,
-  type GraphNode,
 } from "@langchain/langgraph";
 import { z } from "zod";
 import { cohereModel, googleModel, mistralModel } from "./ai.model.js";
@@ -21,7 +20,7 @@ const State = new StateSchema({
   }),
 });
 
-const solutionNode: GraphNode<typeof State> = async (State, config) => {
+const solutionNode = async (State, config) => {
   let sol1 = "";
   let sol2 = "";
   let sol1Complete = false;
@@ -64,7 +63,7 @@ const solutionNode: GraphNode<typeof State> = async (State, config) => {
   };
 };
 
-const judgeNode: GraphNode<typeof State> = async (State, config) => {
+const judgeNode = async (State, config) => {
   const { problem, solution_1, solution_2 } = State;
 
   const judge = createAgent({
@@ -98,8 +97,8 @@ const judgeNode: GraphNode<typeof State> = async (State, config) => {
             Please evaluate each solution on a scale of 0 to 10, where 0 is the worst and 10 is the best. 
             Provide a score for each solution along with a brief reason for the score.
           `),
-      ] as any,
-    } as any,
+      ],
+    },
     config,
   ); 
 
@@ -131,7 +130,7 @@ const graph = new StateGraph(State)
 export default graph;
 
 // 🔥 TRUE REAL-TIME STREAMING - Both models stream concurrently from the start
-export async function* runGraph(userMessages: string) {
+export async function* runGraph(userMessages) {
 
   try {
     let sol1 = "";
@@ -140,8 +139,8 @@ export async function* runGraph(userMessages: string) {
     let cohereDone = false;
     
     // Create queues to store tokens from both models
-    const mistralQueue: any[] = [];
-    const cohereQueue: any[] = [];
+    const mistralQueue = [];
+    const cohereQueue = [];
     let mistralStarted = false;
     let cohereStarted = false;
 
@@ -231,7 +230,7 @@ export async function* runGraph(userMessages: string) {
       },
     };
 
-    const judgeResult = (await judgeNode(judgeState, {})) as any;
+    const judgeResult = await judgeNode(judgeState, {});
 
     yield {
       type: "judge",

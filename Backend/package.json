@@ -6,20 +6,13 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx watch server.ts",
-    "build": "tsc",
-    "start": "npm run build && node dist/server.js"
+    "dev": "node server.js",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.6",
-    "@types/morgan": "^1.9.10",
-    "tsx": "^4.22.0",
-    "typescript": "^6.0.3"
-  },
+  "devDependencies": {},
   "dependencies": {
     "@langchain/cohere": "^1.0.4",
     "@langchain/core": "^1.1.45",

@@ -1,20 +1,8 @@
-import {config} from 'dotenv'
+import { config } from 'dotenv'
 
 config();
 
-type CONFIG ={
-   readonly GOOGLE_API_KEY: string;
-   readonly GROQ_API_KEY: string;
-   readonly MISTRAL_API_KEY: string;
-   readonly COHERE_API_KEY: string;
-   readonly JWT_SECRET: string;
-   readonly GOOGLE_CLIENT_ID: string;
-   readonly GOOGLE_CLIENT_SECRET: string;
-   readonly GOOGLE_CALLBACK_URL: string;
-   readonly MONGO_URI: string;
-}
-
-const config_key: CONFIG = {
+const config_key = {
     GOOGLE_API_KEY: process.env.GOOGLE_GENAI_API_KEY || '',
     GROQ_API_KEY: process.env.GROQ_API_KEY || '',
     MISTRAL_API_KEY: process.env.MISTRAL_API_KEY || '',

@@ -1,9 +1,8 @@
-import type { Request, Response } from "express";
 import { runGraph } from "../ai/graph.model.js";
 
-export async function getGraphData(req: Request, res: Response) {
+export async function getGraphData(req, res) {
   try {
-    const { userMessage } = req.body as { userMessage?: string };
+    const { userMessage } = req.body;
 
     if (!userMessage) {
       res.status(400).json({ error: "userMessage is required" });
@@ -32,4 +31,3 @@ export async function getGraphData(req: Request, res: Response) {
     res.status(500).json({ error: message });
   }
 }
-

@@ -1,6 +1,6 @@
 import { ChatMistralAI } from "@langchain/mistralai";
 import { ChatGoogle } from "@langchain/google";
-import {ChatCohere} from "@langchain/cohere"
+import { ChatCohere } from "@langchain/cohere"
 import config from "../config/config.js";
 
 export const mistralModel = new ChatMistralAI({

@@ -1,22 +1,21 @@
-import { Request, Response } from "express";
 import passport from "../config/google.auth.js";
 import jwt from "jsonwebtoken";
 
 const baseUrl = 'http://localhost:5173'; // Frontend URL
 
 // Initiates Google OAuth flow
-export function googleAuth(req: Request, res: Response) {
+export function googleAuth(req, res) {
   passport.authenticate("google", { scope: ["profile", "email"] })(req, res);
 }
 
 // Google OAuth callback handler
-export function googleAuthCallback(req: Request, res: Response) {
+export function googleAuthCallback(req, res) {
   passport.authenticate("google", {
     session: false,
     failureRedirect: `${baseUrl}/login`,
   })(req, res, () => {
     // Successful authentication - create JWT token
-    const user = req.user as any;
+    const user = req.user;
     
     if (!user) {
       return res.redirect(`${baseUrl}/login`);
@@ -24,7 +23,7 @@ export function googleAuthCallback(req: Request, res: Response) {
 
     const token = jwt.sign(
       { id: user._id },
-      process.env.JWT_SECRET as string,
+      process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 

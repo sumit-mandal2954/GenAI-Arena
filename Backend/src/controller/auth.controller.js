@@ -1,14 +1,12 @@
 import jwt from "jsonwebtoken";
-import e, { Request, Response } from "express";
 import userModel from "../models/auth.model.js";
-import type { IUser } from "../models/auth.model.js";
 
-const sendToken = (user: IUser, res: Response) => {
+const sendToken = (user, res) => {
   const token = jwt.sign(
     {
       id: user._id,
     },
-    process.env.JWT_SECRET as string,
+    process.env.JWT_SECRET,
     {
       expiresIn: "1h",
     },
@@ -32,7 +30,7 @@ const sendToken = (user: IUser, res: Response) => {
   });
 };
 
-export async function registerController(req: Request, res: Response) {
+export async function registerController(req, res) {
   try {
     const { username, email, password } = req.body;
 
@@ -48,7 +46,7 @@ export async function registerController(req: Request, res: Response) {
       username,
       email,
       password,
-    }) as IUser;
+    });
 
     sendToken(user, res);
   } catch (error) {
@@ -56,13 +54,13 @@ export async function registerController(req: Request, res: Response) {
   }
 }
 
-export async function loginController(req: Request, res: Response) {
+export async function loginController(req, res) {
   try {
-    const { username,email,password } = req.body;
+    const { username, email, password } = req.body;
     
     const user = await userModel.findOne({
       $or: [{ username }, { email }],
-    }) as IUser | null;
+    });
 
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
@@ -81,7 +79,7 @@ export async function loginController(req: Request, res: Response) {
   }
 }
 
-export async function guestLoginController(req: Request, res: Response) {
+export async function guestLoginController(req, res) {
   try {
     // Generate a unique guest username with timestamp
     const guestUsername = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
@@ -91,7 +89,7 @@ export async function guestLoginController(req: Request, res: Response) {
       username: guestUsername,
       email: guestEmail,
       password: undefined, // No password for guest users
-    }) as IUser;
+    });
 
     sendToken(user, res);
   } catch (error) {
@@ -100,7 +98,7 @@ export async function guestLoginController(req: Request, res: Response) {
   }
 }
 
-export async function getCurrentUser(req: Request, res: Response) {
+export async function getCurrentUser(req, res) {
   try {
     const user = req.user;
 
@@ -120,5 +118,3 @@ export async function getCurrentUser(req: Request, res: Response) {
     return res.status(500).json({ message: "Internal server error" });
   }
 }
-
-

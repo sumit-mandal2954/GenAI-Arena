@@ -1,4 +1,3 @@
-// config/passport.ts
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import config from "./config.js";
@@ -7,9 +6,9 @@ import userModel from "../models/auth.model.js";
 passport.use(
   new GoogleStrategy(
     {
-      clientID: config.GOOGLE_CLIENT_ID as string,
-      clientSecret: config.GOOGLE_CLIENT_SECRET as string,
-      callbackURL: config.GOOGLE_CALLBACK_URL as string,
+      clientID: config.GOOGLE_CLIENT_ID,
+      clientSecret: config.GOOGLE_CLIENT_SECRET,
+      callbackURL: config.GOOGLE_CALLBACK_URL,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -34,8 +33,8 @@ passport.use(
   )
 );
 
-passport.serializeUser((user: any, done) => done(null, user._id));
-passport.deserializeUser(async (id: string, done) => {
+passport.serializeUser((user, done) => done(null, user._id));
+passport.deserializeUser(async (id, done) => {
   try {
     const user = await userModel.findById(id);
     done(null, user);
