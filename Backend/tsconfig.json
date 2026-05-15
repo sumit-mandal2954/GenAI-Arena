@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "./dist",
-    "module": "nodenext",
+    "module": "esnext",
     "target": "esnext",
     "lib": ["esnext"],
     "skipLibCheck": true,
@@ -12,7 +12,7 @@
     "declaration": true,
     "sourceMap": true,
     "strict": false,
-    "moduleResolution": "nodenext",
+    "moduleResolution": "bundler",
     "isolatedModules": true
   },
   "include": ["src/**/*", "server.ts"],
