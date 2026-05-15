@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL = "https://genai-arena-2.onrender.com";
 
 export async function runGraphStream(userMessage, { onEvent, signal } = {}) {
   try {

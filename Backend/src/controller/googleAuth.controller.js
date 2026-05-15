@@ -1,7 +1,7 @@
 import passport from "../config/google.auth.js";
 import jwt from "jsonwebtoken";
 
-const baseUrl = 'http://localhost:5173'; // Frontend URL
+const baseUrl = 'https://genai-arena-2.onrender.com'; // Frontend URL
 
 // Initiates Google OAuth flow
 export function googleAuth(req, res) {

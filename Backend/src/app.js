@@ -13,7 +13,7 @@ app.use(morgan('dev'));
 app.use(express.static('./public'));
 
 // 🔥 CORS configuration to accept requests from multiple ports during development
-const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174'];
+const allowedOrigins = ['https://genai-arena-2.onrender.com', 'http://localhost:5173', 'http://localhost:5174'];
 app.use(cors({
     origin: (origin, callback) => {
         if (!origin || allowedOrigins.includes(origin)) {

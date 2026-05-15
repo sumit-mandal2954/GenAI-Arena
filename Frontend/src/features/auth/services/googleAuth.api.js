@@ -5,5 +5,5 @@ export const GoogleLogin = () => {
   // Redirect to backend Google OAuth endpoint
   // Backend will handle redirecting to Google, and after auth,
   // Google will redirect back to /auth/google/callback
-  window.location.href = "http://localhost:3000/auth/google";
+  window.location.href = "https://genai-arena-2.onrender.com/auth/google";
 };
